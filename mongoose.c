@@ -3051,6 +3051,7 @@ static int read_request(FILE *fp, struct mg_connection *conn,
   request_len = get_request_len(buf, *nread);
   while (*nread < bufsiz && request_len == 0 &&
          (n = pull(fp, conn, buf + *nread, bufsiz - *nread)) > 0) {
+    if (n == 0) continue;
     *nread += n;
     assert(*nread <= bufsiz);
     request_len = get_request_len(buf, *nread);
