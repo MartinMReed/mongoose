@@ -5381,3 +5381,13 @@ struct mg_context *mg_start(const struct mg_callbacks *callbacks,
 
   return ctx;
 }
+
+int mg_get_sock_count(const struct mg_context *ctx)
+{
+    return ctx->num_listening_sockets;
+}
+
+int mg_get_sock(const struct mg_context *ctx, int i)
+{
+    return ctx->listening_sockets[i].sock;
+}

@@ -376,6 +376,8 @@ int mg_url_decode(const char *src, int src_len, char *dst,
 //   mg_md5(buf, "aa", "bb", NULL);
 char *mg_md5(char buf[33], ...);
 
+int mg_get_sock_count(const struct mg_context *ctx);
+int mg_get_sock(const struct mg_context *ctx, int i);
 
 #ifdef __cplusplus
 }
