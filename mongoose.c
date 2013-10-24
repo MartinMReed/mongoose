@@ -5351,6 +5351,7 @@ struct mg_context *mg_start(const struct mg_callbacks *callbacks,
       !set_uid_option(ctx) ||
 #endif
       !set_acl_option(ctx)) {
+    uninitialize_ssl(ctx);
     free_context(ctx);
     return NULL;
   }
