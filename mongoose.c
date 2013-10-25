@@ -3051,7 +3051,6 @@ static int read_request(FILE *fp, struct mg_connection *conn,
   request_len = get_request_len(buf, *nread);
   while (*nread < bufsiz && request_len == 0 &&
          (n = pull(fp, conn, buf + *nread, bufsiz - *nread)) > 0) {
-    if (n == 0) continue;
     *nread += n;
     assert(*nread <= bufsiz);
     request_len = get_request_len(buf, *nread);
@@ -5181,6 +5180,8 @@ static void accept_new_connection(const struct socket *listener,
     // is down and will close the server end.
     // Thanks to Igor Klopov who suggested the patch.
     setsockopt(so.sock, SOL_SOCKET, SO_KEEPALIVE, (void *) &on, sizeof(on));
+    // Ignore SIGPIPE on the socket. The signal handler does not catch it on OSX
+    setsockopt(so.sock, SOL_SOCKET, SO_NOSIGPIPE, (void *) &on, sizeof(on));
     set_sock_timeout(so.sock, atoi(ctx->config[REQUEST_TIMEOUT]));
     produce_socket(ctx, &so);
   }
