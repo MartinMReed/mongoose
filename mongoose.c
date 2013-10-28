@@ -5180,8 +5180,10 @@ static void accept_new_connection(const struct socket *listener,
     // is down and will close the server end.
     // Thanks to Igor Klopov who suggested the patch.
     setsockopt(so.sock, SOL_SOCKET, SO_KEEPALIVE, (void *) &on, sizeof(on));
+#ifdef SO_NOSIGPIPE
     // Ignore SIGPIPE on the socket. The signal handler does not catch it on OSX
     setsockopt(so.sock, SOL_SOCKET, SO_NOSIGPIPE, (void *) &on, sizeof(on));
+#endif
     set_sock_timeout(so.sock, atoi(ctx->config[REQUEST_TIMEOUT]));
     produce_socket(ctx, &so);
   }
